@@ -51,11 +51,15 @@ const char * stock_name)
  **/
 BOOLEAN system_init(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
+    int i;
+    for (i = 0; i < NUM_DENOMS; ++i)
+    {
+        system->cash_register[i].denom = i;
+        system->cash_register[i].count = 0;
+    }
+    system->item_list = safe_malloc(sizeof(struct ppd_list));
+    system->stock_file_name = NULL;
+    system->coin_file_name = NULL;
     return FALSE;
 }
 
@@ -66,4 +70,18 @@ BOOLEAN system_init(struct ppd_system * system)
 void system_free(struct ppd_system * system)
 {
 
+}
+
+void * safe_malloc(size_t size)
+{
+    void * returnPointer;
+    if((returnPointer = malloc(size)) == NULL)
+    {
+        printf("Malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        return returnPointer;
+    }
 }

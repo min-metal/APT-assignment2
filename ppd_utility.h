@@ -61,4 +61,6 @@ BOOLEAN system_init(struct ppd_system *);
  * memory addresses.
  **/
 void system_free(struct ppd_system *);
+
+void * safe_malloc(size_t size);
 #endif

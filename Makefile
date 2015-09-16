@@ -20,5 +20,8 @@ MAKEFILE=Makefile
 # when submitting. Do not submit your .dat files, or directories. 
 # We only want the files that are part of your implementation.
 ########################################################################
+all:
+	gcc -ansi -Wall -pedantic $(SOURCES) -o ppd
+
 archive:
 	zip $(USER)-a2 $(SOURCES) $(HEADERS) $(README) $(MAKEFILE)

@@ -24,22 +24,25 @@
  * data and handles the processing of options. The bulk of this function
  * should simply be calling other functions to get the job done.
  **/
+
 int main(int argc, char **argv)
 {
     FILE * stock, * coins;
     int c;
     /* validate command line arguments */
-    if (argc != 3)
+    if (argc != /*3*/ 1)
     {
         printf("Invalid arguments\n");
         return EXIT_FAILURE;
     }
-    if ((stock = fopen(argv[1], "r")) == NULL)
+
+    /* Remember to fix */
+    if ((stock = fopen(/*argv[1]*/ "/Users/minh/ClionProjects/APT-assignment2/stock.dat", "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
         return EXIT_FAILURE;
     }
-    if ((coins = fopen(argv[2], "r")) == NULL)
+    if ((coins = fopen(/*argv[2]*/ "/Users/minh/ClionProjects/APT-assignment2/coins.dat", "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
         return EXIT_FAILURE;
@@ -59,7 +62,10 @@ int main(int argc, char **argv)
     struct ppd_system system;
 
     /* init the system */
-
+    if(system_init(&system) == FALSE)
+    {
+        return EXIT_FAILURE;
+    }
     /* load data */
 
     /* test if everything has been initialised correctly */
