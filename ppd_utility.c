@@ -37,11 +37,25 @@ void read_rest_of_line(void)
 BOOLEAN load_data(struct ppd_system * system , const char * coins_name, 
 const char * stock_name)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
+    system->coin_file_name = coins_name;
+    system->stock_file_name = stock_name;
+
+    char * string;
+    string = read_from_file(stock_name);
+    if(string)
+    {
+        puts(string);
+
+        free(string);
+    }
+
+    string = read_from_file(coins_name);
+    if(string)
+    {
+        puts(string);
+        free(string);
+    }
+
     return FALSE;
 }
 
@@ -54,13 +68,15 @@ BOOLEAN system_init(struct ppd_system * system)
     int i;
     for (i = 0; i < NUM_DENOMS; ++i)
     {
-        system->cash_register[i].denom = i;
+        system->cash_register[i].denom = (enum denomination) i;
         system->cash_register[i].count = 0;
     }
     system->item_list = safe_malloc(sizeof(struct ppd_list));
+    system->item_list->head = NULL;
+    system->item_list->count = 0;
     system->stock_file_name = NULL;
     system->coin_file_name = NULL;
-    return FALSE;
+    return TRUE;
 }
 
 /**
@@ -84,4 +100,29 @@ void * safe_malloc(size_t size)
     {
         return returnPointer;
     }
+}
+
+/* sourced from http://stackoverflow.com/questions/3463426/in-c-how-should-i-read-a-text-file-and-print-all-strings */
+/* from user 'lfzawacki', answered Aug 12 '10 at 3:56, accessed 19/09/15, used for educational purposes only */
+char * read_from_file(const char * file_name)
+{
+    /* TODO fix file path */
+    char file_path[100] = PATH;
+    strcat(file_path, file_name);
+    char * buffer = NULL;
+    long string_size;
+    FILE * ifp = fopen(/*file_name*/ file_path, "r");
+
+    fseek(ifp, 0, SEEK_END);
+    string_size = ftell(ifp);
+    rewind(ifp);
+
+    buffer = (char *) safe_malloc(sizeof(char) * string_size + 1);
+    if(fread(buffer, sizeof(char), (size_t) string_size, ifp) != string_size)
+    {
+        free(buffer);
+        buffer = NULL;
+    }
+
+    return buffer;
 }

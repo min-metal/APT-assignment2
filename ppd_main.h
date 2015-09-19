@@ -15,6 +15,8 @@
 #include "ppd_coin.h"
 #ifndef PPD_MAIN
 #define PPD_MAIN
+
+#define PATH "/Users/minh/ClionProjects/APT-assignment2/"
 /**
  * @file ppd_main.h this file holds the rest of the application together.
  * From these header files, main() can call all functions refered to 
@@ -30,7 +32,7 @@ typedef enum truefalse
     /**
      * the constant for false
      **/
-    FALSE, 
+    FALSE,
     /**
      * the constant for true
      **/

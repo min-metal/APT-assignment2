@@ -63,4 +63,6 @@ BOOLEAN system_init(struct ppd_system *);
 void system_free(struct ppd_system *);
 
 void * safe_malloc(size_t size);
+
+char * read_from_file(const char * file_name);
 #endif

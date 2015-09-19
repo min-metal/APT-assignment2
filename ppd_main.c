@@ -37,26 +37,21 @@ int main(int argc, char **argv)
     }
 
     /* Remember to fix */
-    if ((stock = fopen(/*argv[1]*/ "/Users/minh/ClionProjects/APT-assignment2/stock.dat", "r")) == NULL)
+    if ((stock = fopen(/*argv[1]*/ PATH "stock.dat", "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
         return EXIT_FAILURE;
     }
-    if ((coins = fopen(/*argv[2]*/ "/Users/minh/ClionProjects/APT-assignment2/coins.dat", "r")) == NULL)
+    if ((coins = fopen(/*argv[2]*/ PATH "coins.dat", "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
         return EXIT_FAILURE;
     }
 
-    while(fread(&c, sizeof(char), 1, stock) > 0)
+/*    while((c = getc(coins)) != EOF)
     {
         printf("%c", c);
-    }
-
-    while((c = getc(coins)) != EOF)
-    {
-        printf("%c", c);
-    }
+    }*/
 
     /* represents the data structures to manage the system */
     struct ppd_system system;
@@ -66,7 +61,11 @@ int main(int argc, char **argv)
     {
         return EXIT_FAILURE;
     }
+
+
     /* load data */
+    load_data(&system, "coins.dat", "stock.dat");
+
 
     /* test if everything has been initialised correctly */
 

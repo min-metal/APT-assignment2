@@ -12,6 +12,7 @@
 #include <string.h>
 #include <limits.h>
 #include <ctype.h>
+
 #ifndef PPD_STOCK
 #define PPD_STOCK
 
@@ -47,6 +48,8 @@
  * we should reset to on restock
  **/
 #define DEFAULT_STOCK_LEVEL 20
+
+#define STOCK_LINE_LEN IDLEN + NAMELEN + DESCLEN + 20
 
 /**
  * The number of denominations of currency available in the system 
@@ -125,7 +128,10 @@ struct ppd_list
     unsigned count;
 };
 
+int add_to_list(struct ppd_list * list, struct ppd_stock * data);
+
 
 #endif
+
 
 
