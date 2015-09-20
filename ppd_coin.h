@@ -29,7 +29,7 @@ enum denomination
 };
 
 /**
- * represents a coin type stored in the cash register. Each demonination
+ * represents a coin type stored in the cash register. Each denomination
  * will have exactly one of these in the cash register.
  **/
 struct coin

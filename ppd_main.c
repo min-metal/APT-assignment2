@@ -27,8 +27,10 @@
 
 int main(int argc, char **argv)
 {
+    /* represents the data structures to manage the system */
+    struct ppd_system system;
     FILE * stock, * coins;
-    int c;
+
     /* validate command line arguments */
     if (argc != /*3*/ 1)
     {
@@ -53,8 +55,6 @@ int main(int argc, char **argv)
         printf("%c", c);
     }*/
 
-    /* represents the data structures to manage the system */
-    struct ppd_system system;
 
     /* init the system */
     if(system_init(&system) == FALSE)
@@ -64,7 +64,11 @@ int main(int argc, char **argv)
 
 
     /* load data */
-    load_data(&system, "coins.dat", "stock.dat");
+    if (load_data(&system, "coins.dat", "stock.dat") == FALSE)
+    {
+        system_free(&system);
+        return EXIT_FAILURE;
+    }
 
 
     /* test if everything has been initialised correctly */

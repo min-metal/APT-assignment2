@@ -37,26 +37,30 @@ void read_rest_of_line(void)
 BOOLEAN load_data(struct ppd_system * system , const char * coins_name, 
 const char * stock_name)
 {
+    char * string;
     system->coin_file_name = coins_name;
     system->stock_file_name = stock_name;
 
-    char * string;
     string = read_from_file(stock_name);
     if(string)
     {
-        puts(string);
-
+        /*puts(string);*/
+        if (load_stock(system->item_list, string) == FAILURE)
+        {
+            free(string);
+            return FALSE;
+        }
         free(string);
     }
 
     string = read_from_file(coins_name);
     if(string)
     {
-        puts(string);
+        /*puts(string);*/
         free(string);
     }
 
-    return FALSE;
+    return TRUE;
 }
 
 /**
@@ -108,9 +112,11 @@ char * read_from_file(const char * file_name)
 {
     /* TODO fix file path */
     char file_path[100] = PATH;
-    strcat(file_path, file_name);
     char * buffer = NULL;
     long string_size;
+
+    strcat(file_path, file_name);
+
     FILE * ifp = fopen(/*file_name*/ file_path, "r");
 
     fseek(ifp, 0, SEEK_END);
@@ -126,3 +132,30 @@ char * read_from_file(const char * file_name)
 
     return buffer;
 }
+
+int explode_input(char * string, const char delim)
+{
+    int count = 1;
+    char * token;
+    token = string;
+/*    token = strtok(string, delim);
+
+    while(token != NULL)
+    {
+        printf( "%s\n", token ); TODO remove printf
+        token = strtok(NULL, delim);
+        ++count;
+    }*/
+
+    while(*token != '\0')
+    {
+        if(*token == delim)
+        {
+            *token = '\0';
+            ++count;
+        }
+        ++token;
+    }
+    return count;
+}
+

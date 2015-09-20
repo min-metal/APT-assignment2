@@ -22,6 +22,14 @@
  * managing the list here and implement them in ppd_stock.c
  **/
 
+#define STOCK_DELIM '|'
+#define STOCK_DELIM_STRING "|"
+
+/* number of inputs per line, number of attributes */
+#define NO_ATTRIBUTE 5
+/* number of delims */
+#define NO_DELIMS NO_ATTRIBUTE - 1
+
 /**
  * The length of the id string not counting the nul terminator
  **/
@@ -38,6 +46,11 @@
  **/
 #define DESCLEN 255
 
+#define PRICELEN 5
+
+#define ONHANDLEN 5
+
+#define EXTRA_SPACE 1
 /**
  * The default coin level to reset the coins to on request
  **/
@@ -130,7 +143,12 @@ struct ppd_list
 
 int add_to_list(struct ppd_list * list, struct ppd_stock * data);
 
+/* integrity check before adding to list */
+int load_stock(struct ppd_list * list, char * string);
 
+struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE]);
+
+int count_delim_in_string(const void * str, int c);
 #endif
 
 

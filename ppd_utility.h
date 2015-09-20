@@ -65,4 +65,7 @@ void system_free(struct ppd_system *);
 void * safe_malloc(size_t size);
 
 char * read_from_file(const char * file_name);
+
+/* replaces all occurence of delim with '\0' */
+int explode_input(char * string, const char delim);
 #endif

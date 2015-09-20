@@ -16,6 +16,9 @@
 #ifndef PPD_MAIN
 #define PPD_MAIN
 
+#define SUCCESS 1
+#define FAILURE 0
+
 #define PATH "/Users/minh/ClionProjects/APT-assignment2/"
 /**
  * @file ppd_main.h this file holds the rest of the application together.

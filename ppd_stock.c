@@ -18,12 +18,12 @@
 
 int add_to_list(struct ppd_list * list, struct ppd_stock * data)
 {
+    struct ppd_node * previous = NULL;
+    struct ppd_node * current = list->head;
+
     struct ppd_node * new = safe_malloc(sizeof(*new));
     new->data = data;
     new->next = NULL;
-
-    struct ppd_node * previous = NULL;
-    struct ppd_node * current = list->head;
 
     while(current != NULL)
     {
@@ -52,5 +52,105 @@ int add_to_list(struct ppd_list * list, struct ppd_stock * data)
 
     return 1;
 
+}
+
+int load_stock(struct ppd_list * list, char * string)
+{
+    int number_of_lines = 0, i, j, str_len;
+    int successful_read = 0;
+    char * start = NULL;
+    char temp[NO_ATTRIBUTE][DESCLEN + EXTRA_SPACE];
+
+
+    number_of_lines = explode_input(string, '\n') - 1;
+
+
+    printf("\nNo. lines to read: %i\n", number_of_lines);
+
+/*    for(i = 0; i < 70; ++i)
+        printf("%i, ", (int) *(string + i));*/
+
+    start = string;
+    while(*start != '\0')
+    {
+        if (count_delim_in_string(start, STOCK_DELIM) != NO_DELIMS){
+            printf("Wrong number of delimiters!\n");
+            return FAILURE;
+        }
+
+        explode_input(start, STOCK_DELIM);
+
+        for(j = 0; j < NO_ATTRIBUTE; ++j) {
+            if ((str_len = strlen(start)) > DESCLEN)
+                return FAILURE;
+
+            strcpy(temp[j], start);
+            printf("%s\n", start);
+            start += str_len + 1;
+        }
+
+        /* create new stock and add to list */
+        if(new_stock(temp) == NULL)
+        {
+            return FAILURE;
+        }
+
+
+    }
+
+    return SUCCESS;
+
+}
+
+struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
+{
+    struct ppd_stock * stock = safe_malloc(sizeof(*stock));
+
+    if (strlen(attributes[0]) > IDLEN)
+    {
+        fprintf(stderr, "ID must be < %i characters.\n", IDLEN);
+        free(stock);
+        return NULL;
+    }
+    if (strlen(attributes[1]) > NAMELEN)
+    {
+        fprintf(stderr, "Name must be < %i characters.\n", NAMELEN);
+        free(stock);
+        return NULL;
+    }
+    if (strlen(attributes[2]) > DESCLEN)
+    {
+        fprintf(stderr, "Description must be < %i characters.\n", DESCLEN);
+        free(stock);
+        return NULL;
+    }
+    if (strlen(attributes[3]) > PRICELEN)
+    {
+        fprintf(stderr, "Price must be < %i characters.\n", PRICELEN);
+        free(stock);
+        return NULL;
+    }
+    if (strlen(attributes[4]) > ONHANDLEN)
+    {
+        fprintf(stderr, "Stock level must be < %i characters.\n", ONHANDLEN);
+        free(stock);
+        return NULL;
+    }
+
+    return stock;
+}
+
+int count_delim_in_string(const void * str, int c)
+{
+    int count = 0;
+    const char * p = str;
+
+    while((p = strchr(p, c)) != NULL)
+    {
+        ++count;
+        ++p; /* increment pointer to char after delim */
+    }
+
+    return count;
 }
 
