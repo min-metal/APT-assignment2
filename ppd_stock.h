@@ -12,6 +12,9 @@
 #include <string.h>
 #include <limits.h>
 #include <ctype.h>
+#include "ppd_coin.h"
+#include "ppd_main.h"
+
 
 #ifndef PPD_STOCK
 #define PPD_STOCK
@@ -139,6 +142,34 @@ struct ppd_list
      * how many nodes are there in the list?
      **/
     unsigned count;
+};
+
+/**
+ * this is the header structure for all the datatypes that is
+ * passed around and manipulated
+ **/
+struct ppd_system
+{
+    /**
+     * the container for all the money manipulated by the system
+     **/
+    struct coin cash_register[NUM_DENOMS];
+
+    /**
+     * the linked list - note that this is a pointer - how does that
+     * change what we need to do for initialization of the list?
+     **/
+    struct ppd_list * item_list;
+
+    /**
+     * the name of the coin file - we need this for saving as all menu
+     * items only take the one parameter of the ppd_system
+     **/
+    const char * coin_file_name;
+    /**
+     * the name of the stock file
+     **/
+    const char * stock_file_name;
 };
 
 int add_to_list(struct ppd_list * list, struct ppd_stock * data);

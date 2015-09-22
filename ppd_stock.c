@@ -45,8 +45,8 @@ int add_to_list(struct ppd_list * list, struct ppd_stock * data)
     }
     else
     {
-        previous->next = new;
         new->next = current;
+        previous->next = new;
     }
     list->count++;
 
@@ -90,7 +90,7 @@ int load_stock(struct ppd_list * list, char * string)
         }
 
         /* create new stock and add to list */
-        if(new_stock(temp) == NULL)
+        if(new_stock(temp) == NULL) /*TODO free */
         {
             return FAILURE;
         }

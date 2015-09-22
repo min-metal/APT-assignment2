@@ -13,6 +13,8 @@
 #include "ppd_menu.h"
 #include "ppd_options.h"
 #include "ppd_utility.h"
+#include "ppd_coin.h"
+#include "ppd_stock.h"
 
 /**
  * @file ppd_main.c contains the main function implementation and any 
@@ -84,5 +86,8 @@ int main(int argc, char **argv)
     /* make sure you always free all memory and close all files 
      * before you exit the program
      */
+
+    fclose(stock);
+    fclose(coins);
     return EXIT_SUCCESS;
 }

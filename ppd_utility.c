@@ -130,6 +130,7 @@ char * read_from_file(const char * file_name)
         buffer = NULL;
     }
 
+    fclose(ifp);
     return buffer;
 }
 
