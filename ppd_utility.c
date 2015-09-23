@@ -45,7 +45,7 @@ const char * stock_name)
     if(string)
     {
         /*puts(string);*/
-        if (load_stock(system->item_list, string) == FAILURE)
+        if (load_stock(system->item_list, string) == FALSE)
         {
             free(string);
             return FALSE;
@@ -89,6 +89,18 @@ BOOLEAN system_init(struct ppd_system * system)
  **/
 void system_free(struct ppd_system * system)
 {
+    struct ppd_node * current, * next;
+
+    current = system->item_list->head;
+    while(current != NULL)
+    {
+        next = current->next;
+        free(current->data);
+        free(current);
+        current = next;
+    }
+
+    free(system->item_list);
 
 }
 
@@ -124,6 +136,8 @@ char * read_from_file(const char * file_name)
     rewind(ifp);
 
     buffer = (char *) safe_malloc(sizeof(char) * string_size + 1);
+    memset(buffer, 0, sizeof(char) * string_size + 1);
+
     if(fread(buffer, sizeof(char), (size_t) string_size, ifp) != string_size)
     {
         free(buffer);
@@ -160,3 +174,16 @@ int explode_input(char * string, const char delim)
     return count;
 }
 
+int count_delim_in_string(const void * str, int c)
+{
+    int count = 0;
+    const char * p = str;
+
+    while((p = strchr(p, c)) != NULL)
+    {
+        ++count;
+        ++p; /* increment pointer to char after delim */
+    }
+
+    return count;
+}

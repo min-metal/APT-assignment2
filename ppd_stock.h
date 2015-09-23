@@ -31,7 +31,7 @@
 /* number of inputs per line, number of attributes */
 #define NO_ATTRIBUTE 5
 /* number of delims */
-#define NO_DELIMS NO_ATTRIBUTE - 1
+#define NO_STOCK_DELIMS NO_ATTRIBUTE - 1
 
 /**
  * The length of the id string not counting the nul terminator
@@ -50,6 +50,17 @@
 #define DESCLEN 255
 
 #define PRICELEN 5
+/* max price in cents */
+#define MAX_PRICE 9999
+#define PRICE_DELIM_CHAR '.'
+#define NO_PRICE_DELIM 1
+
+/* how many characters a cent field should have */
+#define NO_CENTS 2
+/* price should divisible by 5 cents. */
+#define CENT_ROUNDING 5
+/* dollar * 100 = cents */
+#define DOLLAR_TO_CENT 100
 
 #define ONHANDLEN 5
 
@@ -64,6 +75,7 @@
  * we should reset to on restock
  **/
 #define DEFAULT_STOCK_LEVEL 20
+#define MAX_STOCK_LEVEL 99
 
 #define STOCK_LINE_LEN IDLEN + NAMELEN + DESCLEN + 20
 
@@ -71,6 +83,12 @@
  * The number of denominations of currency available in the system 
  **/
 #define NUM_DENOMS 8
+
+typedef enum attribute
+{
+    ID, NAME, DESC, PRICE, ONHAND
+} ATTRIBUTE;
+
 
 /**
  * a structure to represent a price. One of the problems with the floating
@@ -172,14 +190,23 @@ struct ppd_system
     const char * stock_file_name;
 };
 
-int add_to_list(struct ppd_list * list, struct ppd_stock * data);
+BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data);
+BOOLEAN display_list(struct ppd_list * list);
 
 /* integrity check before adding to list */
-int load_stock(struct ppd_list * list, char * string);
+BOOLEAN load_stock(struct ppd_list * list, char * string);
 
 struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE]);
 
-int count_delim_in_string(const void * str, int c);
+BOOLEAN check_stock_id(struct ppd_list * list, struct ppd_stock * data);
+BOOLEAN check_price(char * price);
+BOOLEAN check_on_hand(char * onhand);
+
+/* returns price in cents, presumes input is valid,
+ * does not check if cent%5 == 0;
+ */
+unsigned get_price(const char *str);
+unsigned get_on_hand(const char * str);
 #endif
 
 

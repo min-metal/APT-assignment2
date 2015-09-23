@@ -27,7 +27,7 @@
  * should simply be calling other functions to get the job done.
  **/
 
-int main(int argc, char **argv)
+int main(int argc, char ** argv)
 {
     /* represents the data structures to manage the system */
     struct ppd_system system;
@@ -68,9 +68,14 @@ int main(int argc, char **argv)
     /* load data */
     if (load_data(&system, "coins.dat", "stock.dat") == FALSE)
     {
+        printf("Load data failed!\n");
         system_free(&system);
+        fclose(stock);
+        fclose(coins);
         return EXIT_FAILURE;
     }
+
+    display_list(system.item_list);
 
 
     /* test if everything has been initialised correctly */
@@ -87,6 +92,8 @@ int main(int argc, char **argv)
      * before you exit the program
      */
 
+
+    system_free(&system);
     fclose(stock);
     fclose(coins);
     return EXIT_SUCCESS;

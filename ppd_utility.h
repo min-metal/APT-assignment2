@@ -69,4 +69,6 @@ char * read_from_file(const char * file_name);
 
 /* replaces all occurence of delim with '\0' */
 int explode_input(char * string, const char delim);
+
+int count_delim_in_string(const void * str, int c);
 #endif
