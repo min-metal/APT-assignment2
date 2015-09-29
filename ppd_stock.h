@@ -79,11 +79,6 @@
 
 #define STOCK_LINE_LEN IDLEN + NAMELEN + DESCLEN + 20
 
-/**
- * The number of denominations of currency available in the system 
- **/
-#define NUM_DENOMS 8
-
 typedef enum attribute
 {
     ID, NAME, DESC, PRICE, ONHAND

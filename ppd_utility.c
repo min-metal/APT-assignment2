@@ -57,6 +57,11 @@ const char * stock_name)
     if(string)
     {
         /*puts(string);*/
+        if(load_coin(system->cash_register, string) == FALSE)
+        {
+            free(string);
+            return FALSE;
+        }
         free(string);
     }
 
@@ -123,13 +128,14 @@ void * safe_malloc(size_t size)
 char * read_from_file(const char * file_name)
 {
     /* TODO fix file path */
+    FILE * ifp;
     char file_path[100] = PATH;
     char * buffer = NULL;
     long string_size;
 
     strcat(file_path, file_name);
 
-    FILE * ifp = fopen(/*file_name*/ file_path, "r");
+    ifp = fopen(/*file_name*/ file_path, "r");
 
     fseek(ifp, 0, SEEK_END);
     string_size = ftell(ifp);

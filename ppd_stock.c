@@ -20,6 +20,7 @@ BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
 {
     struct ppd_node * previous = NULL;
     struct ppd_node * current = list->head;
+    struct ppd_node * new;
 
     if(check_stock_id(list, data) == FALSE)
     {
@@ -27,7 +28,7 @@ BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
         return FALSE;
     }
 
-    struct ppd_node * new = safe_malloc(sizeof(*new));
+    new = safe_malloc(sizeof(*new));
     new->data = data;
     new->next = NULL;
 
@@ -65,7 +66,7 @@ BOOLEAN display_list(struct ppd_list * list)
     struct ppd_node * current;
     current = list->head;
 
-    printf("Items Menu\n");
+    printf("\nItems Menu\n");
     printf("%-6s|%-40s|%-10s|%-6s\n", "ID", "Name", "Available", "Price");
     printf("-----------------------------------------------------------------\n");
     while(current != NULL)
@@ -91,9 +92,7 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
 
 
     number_of_lines = explode_input(string, '\n') - 1;
-
-
-    printf("\nNo. lines to read: %i\n", number_of_lines);
+    printf("\nNo. lines to read from stock: %i\n", number_of_lines);
 
     start = string;
     while(*start != '\0')
@@ -111,8 +110,10 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
         for(j = 0; j < NO_ATTRIBUTE; ++j)
         {
             if ((str_len = strlen(start)) > DESCLEN)
+            {
+                fprintf(stderr, "One or more field contains too many characters\n");
                 return FALSE;
-
+            }
             strcpy(temp[j], start);
             start += str_len + 1;
         }
@@ -138,9 +139,8 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
     }
 
 
-
+    printf("Load successful\n");
     return TRUE;
-
 }
 
 struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])

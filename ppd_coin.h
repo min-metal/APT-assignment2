@@ -16,13 +16,30 @@
  **/
 #ifndef PPD_COIN
 #define PPD_COIN
-#define COIN_DELIM ","
+#include "ppd_main.h"
+#define COIN_DELIM ','
+/* number of coin delims per line*/
+#define NO_COIN_DELIM 1
+#define NO_COIN_ATTRIBUTE 2
+
+/* max chars for coin except nul*/
+#define COIN_LENGTH 5
+/**
+ * The number of denominations of currency available in the system
+ **/
+#define NUM_DENOMS 8
 
 struct ppd_system;
 /**
  * enumeration representing the various types of currency available in
  * the system. 
  **/
+
+typedef enum coin_attribute
+{
+    DENOMINATION, QTY
+} COIN_ATTRIBUTE;
+
 enum denomination
 {
     FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS, ONE_DOLLAR, 
@@ -44,5 +61,9 @@ struct coin
      **/
     unsigned count;
 };
+
+BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string);
+BOOLEAN add_to_register(struct coin cash_register[],
+            char attributes[][COIN_LENGTH + 1], BOOLEAN is_added[]);
 
 #endif
