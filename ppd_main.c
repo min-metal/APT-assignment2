@@ -13,8 +13,6 @@
 #include "ppd_menu.h"
 #include "ppd_options.h"
 #include "ppd_utility.h"
-#include "ppd_coin.h"
-#include "ppd_stock.h"
 
 /**
  * @file ppd_main.c contains the main function implementation and any 
@@ -75,7 +73,10 @@ int main(int argc, char ** argv)
         return EXIT_FAILURE;
     }
 
-    display_list(system.item_list);
+    display_items(&system);
+    print_register(system.cash_register, FALSE);
+    purchase_item(&system);
+    print_register(system.cash_register, FALSE);
 
 
     /* test if everything has been initialised correctly */

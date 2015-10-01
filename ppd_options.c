@@ -28,12 +28,7 @@
  **/
 BOOLEAN display_items(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    return display_list(system->item_list);
 }
 
 /**
@@ -43,12 +38,88 @@ BOOLEAN display_items(struct ppd_system * system)
  **/
 BOOLEAN purchase_item(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    struct coin denom_given[NUM_DENOMS], denom_change[NUM_DENOMS];
+    char item_id[IDLEN + EXTRA_SPACE];
+    int money_given = 0, still_needed, change_needed;
+    INPUT_RESULT input_result;
+    struct ppd_stock * temp_stock = NULL;
+
+    init_register(denom_given);
+    init_register(denom_change);
+
+    printf("\nPurchase Item\n");
+    printf("-------------\n");
+
+    input_result = getString(item_id, NAMELEN + EXTRA_SPACE,
+             "Please enter the ID of the item you wish to purchase: ");
+    if(input_result != SUCCESS) {
+        printf("Returning to Menu!\n");
+        return FALSE;
+    }
+
+    if((temp_stock = get_stock_by_id(system->item_list, item_id)) == NULL)
+    {
+        printf("Stock ID is not in system!\n");
+        return FALSE;
+    }
+
+    printf("You have selected \"%s - %s\". This will cost you $%.2f.\n",
+    temp_stock->name, temp_stock->desc,
+       (float)(temp_stock->price.dollars * DOLLAR_TO_CENT + temp_stock->price.cents) /
+           DOLLAR_TO_CENT
+    );
+
+    printf("Please hand over the money - "
+                   "type in the value of each note/coins in cents.\n");
+
+    still_needed =
+        (temp_stock->price.dollars * DOLLAR_TO_CENT + temp_stock->price.cents)
+        - money_given;
+    while(still_needed > 0)
+    {
+        char prompt[PROMPT_LEN];
+        enum denomination denom_enum;
+        int temp_given = 0;
+
+        sprintf(prompt, "You still need to give us $%.2f: ",
+               ((float) still_needed / DOLLAR_TO_CENT));
+        input_result = get_int(&temp_given, COIN_LENGTH, prompt);
+
+        if(input_result == RTM)
+            return FALSE;
+        else if(input_result == FAILURE)
+            continue;
+
+        if(!is_valid_denom(temp_given, &denom_enum))
+        {
+            printf("Incorrect denomination!\n");
+            continue;
+        }
+        else
+        {
+            ++denom_given[denom_enum].count;
+            still_needed -= temp_given;
+        }
+    }
+
+    if(add_to_register(system->cash_register, denom_given) == FALSE)
+    {
+        printf("Adding coin to register failed, Register full!\n");
+        return FALSE;
+    }
+
+    change_needed = still_needed * -1;
+
+    if(!get_change(change_needed, system->cash_register, denom_change))
+    {
+        printf("System doesn't have enough change!\n");
+        remove_from_register(system->cash_register, denom_given);
+        return FALSE;
+    }
+
+    printf("\n/** CHANGE GIVEN **/");
+    print_register(denom_change, TRUE);
+    return TRUE;
 }
 
 /**

@@ -9,8 +9,8 @@
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
 
-#include "ppd_main.h"
-#include "ppd_stock.h"
+#include "ppd_utility.h"
+#define PROMPT_LEN 100
 
 /**
  * @file ppd_options.h declares all functions to implement the menu

@@ -23,6 +23,11 @@
  * are going to quit the application.
  **/
 
+typedef enum input_result
+{
+    FAILURE, SUCCESS, RTM = -1
+} INPUT_RESULT;
+
 /**
  * the function to call for buffer clearing. This was discussed extensively
  * for assignment 1
@@ -71,4 +76,6 @@ char * read_from_file(const char * file_name);
 int explode_input(char * string, const char delim);
 
 int count_delim_in_string(const void * str, int c);
+INPUT_RESULT getString(char* string, unsigned length, char* prompt);
+INPUT_RESULT get_int(int * num, unsigned length, char * prompt);
 #endif

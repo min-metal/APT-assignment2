@@ -11,3 +11,22 @@
  /* This file is for you to provide any extra information that your 
  markers may find useful. For example. Bugs, inconsistencies, incomplete
  functionality, reasoning for design choices etc. */
+
+ * If an empty stock file is chosen to be load, my program will still
+ load it, the user will have to add items using option "4. Add Item"
+ to purchase anything.
+
+ * Stock file Constraints
+ Must have exactly four delimiters '|' per line.
+ Must end in a new line.
+ Must not have any empty lines in between each line of stock input.
+
+ If these conditions are not met, the program will free all memory and exit.
+
+ * Stock file Loading
+ There can be no duplicate ID.
+ ID must follow format of 'I' + 4 integers
+ Description can be empty.
+ Price field must not have empty dollar, have exactly 2 numbers in the cent field,
+ and must have exactly 1 '.'. Cent must be divisible by 5.
+ On hand field can be empty, system will replace it with 0.

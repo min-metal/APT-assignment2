@@ -74,12 +74,7 @@ const char * stock_name)
  **/
 BOOLEAN system_init(struct ppd_system * system)
 {
-    int i;
-    for (i = 0; i < NUM_DENOMS; ++i)
-    {
-        system->cash_register[i].denom = (enum denomination) i;
-        system->cash_register[i].count = 0;
-    }
+    init_register(system->cash_register);
     system->item_list = safe_malloc(sizeof(struct ppd_list));
     system->item_list->head = NULL;
     system->item_list->count = 0;
@@ -153,6 +148,90 @@ char * read_from_file(const char * file_name)
     fclose(ifp);
     return buffer;
 }
+
+INPUT_RESULT getString(char* string, unsigned length, char* prompt)
+{
+    int finished = FALSE;
+    char* tempString;
+
+    /* Allocate temporary memory. */
+    if ((tempString = malloc(sizeof(char) * (length+2))) == NULL)
+    {
+        fprintf(stderr, "Fatal error: malloc() failed in getString().\n");
+        exit(EXIT_FAILURE);
+    }
+
+    /* Continue to interact with the user until the input is valid. */
+    do
+    {
+        /* Provide a custom prompt. */
+        printf("%s", prompt);
+
+        /* Accept input. "+2" is for the \n and \0 characters. */
+        if(fgets(tempString, length + 2, stdin) == NULL)
+        {
+            free(tempString);
+            return RTM;
+        }
+
+        /* A string that doesn't have a newline character is too long. */
+        if (tempString[strlen(tempString) - 1] != '\n')
+        {
+            printf("Input was too long.\n");
+            read_rest_of_line();
+        }
+        else if (tempString[0] == '\n')
+        {
+            free(tempString);
+            return RTM;
+        }
+        else
+        {
+            finished = TRUE;
+        }
+
+    } while (finished == FALSE);
+
+    /* Overwrite the \n character with \0. */
+    tempString[strlen(tempString) - 1] = '\0';
+
+    /* Make the result string available to calling function. */
+    strcpy(string, tempString);
+
+    /* Deallocate temporary memory. */
+    free(tempString);
+
+    return SUCCESS;
+}
+
+INPUT_RESULT get_int(int * num, unsigned length, char * prompt)
+{
+    char * temp, * end;
+    INPUT_RESULT input_result;
+    int input_num;
+
+    temp = safe_malloc(sizeof(char) * (length + 2));
+
+    if((input_result = getString(temp, length, prompt)) != SUCCESS)
+    {
+        free(temp);
+        return input_result;
+    }
+
+    input_num = (int) strtol(temp, &end, 0);
+
+    if(*end)
+    {
+        printf("Data is not numeric!\n");
+        free(temp);
+        return FAILURE;
+    }
+
+    *num = input_num;
+    free(temp);
+    return SUCCESS;
+}
+
 
 int explode_input(char * string, const char delim)
 {

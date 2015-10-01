@@ -22,8 +22,9 @@ BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
     struct ppd_node * current = list->head;
     struct ppd_node * new;
 
-    if(check_stock_id(list, data) == FALSE)
+    if(check_stock_id_in_system(list, data))
     {
+        fprintf(stderr, "Duplicate ID!\n");
         free(data);
         return FALSE;
     }
@@ -143,14 +144,31 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
     return TRUE;
 }
 
+struct ppd_stock * get_stock_by_id(struct ppd_list * list, char * stock_id)
+{
+    struct ppd_node * current;
+    current = list->head;
+
+    while(current != NULL)
+    {
+        if(strcmp(current->data->id, stock_id) == 0)
+        {
+            return current->data;
+        }
+        current = current->next;
+    }
+    return NULL;
+
+}
+
 struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
 {
     unsigned price, on_hand;
     struct ppd_stock * stock = safe_malloc(sizeof(*stock));
 
-    if (strlen(attributes[ID]) > IDLEN)
+    if (strlen(attributes[ID]) != IDLEN)
     {
-        fprintf(stderr, "ID must be < %i characters.\n", IDLEN);
+        fprintf(stderr, "ID must be %i characters.\n", IDLEN);
         free(stock);
         return NULL;
     }
@@ -179,6 +197,12 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
         return NULL;
     }
 
+    if (check_stock_id_regex(attributes[ID]) == FALSE)
+    {
+        fprintf(stderr, "Stock ID mismatch\n");
+        free(stock);
+        return NULL;
+    }
     if (check_price(attributes[PRICE]) == FALSE)
     {
         free(stock);
@@ -189,6 +213,7 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
         free(stock);
         return NULL;
     }
+
 
 
     strcpy(stock->id, attributes[ID]);
@@ -217,7 +242,7 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
     return stock;
 }
 
-BOOLEAN check_stock_id(struct ppd_list * list, struct ppd_stock * data)
+BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data)
 {
     struct ppd_node * current;
     current = list->head;
@@ -226,13 +251,22 @@ BOOLEAN check_stock_id(struct ppd_list * list, struct ppd_stock * data)
     {
         if(strcmp(current->data->id, data->id) == 0)
         {
-            fprintf(stderr, "Duplicate ID!\n");
-            return FALSE;
+            return TRUE;
         }
         current = current->next;
     }
-    return TRUE;
+    return FALSE;
+}
 
+BOOLEAN check_stock_id_regex(char * string)
+{
+    int i;
+    if(string[0] != 'I')
+        return FALSE;
+    for(i = 1; i < IDLEN; ++i)
+        if(string[i] < '0' || string[i] > '9')
+            return FALSE;
+    return TRUE;
 }
 
 BOOLEAN check_price(char * price)

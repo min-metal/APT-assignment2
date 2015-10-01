@@ -191,9 +191,13 @@ BOOLEAN display_list(struct ppd_list * list);
 /* integrity check before adding to list */
 BOOLEAN load_stock(struct ppd_list * list, char * string);
 
+/* return stock * with corresponding id, else NULL */
+struct ppd_stock * get_stock_by_id(struct ppd_list * list, char * stock_id);
 struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE]);
 
-BOOLEAN check_stock_id(struct ppd_list * list, struct ppd_stock * data);
+/* return TRUE if data->stock_id is in system */
+BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data);
+BOOLEAN check_stock_id_regex(char * string);
 BOOLEAN check_price(char * price);
 BOOLEAN check_on_hand(char * onhand);
 
