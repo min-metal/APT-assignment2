@@ -77,6 +77,8 @@ int main(int argc, char ** argv)
     print_register(system.cash_register, FALSE);
     purchase_item(&system);
     print_register(system.cash_register, FALSE);
+    add_item(&system);
+    display_items(&system);
 
 
     /* test if everything has been initialised correctly */

@@ -10,6 +10,7 @@
  ***********************************************************************/
 
 #include <stdio.h>
+#include <assert.h>
 #include "ppd_main.h"
 #include "ppd_stock.h"
 #ifndef PPD_UTILITY

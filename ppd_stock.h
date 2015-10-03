@@ -37,6 +37,9 @@
  * The length of the id string not counting the nul terminator
  **/
 #define IDLEN 5
+#define ID_CHAR 'I'
+#define FIRST_ID "I0001"
+#define LAST_ID "I9999"
 
 /**
  * The maximum length of a product name not counting the nul terminator
@@ -76,8 +79,6 @@
  **/
 #define DEFAULT_STOCK_LEVEL 20
 #define MAX_STOCK_LEVEL 99
-
-#define STOCK_LINE_LEN IDLEN + NAMELEN + DESCLEN + 20
 
 typedef enum attribute
 {
@@ -188,7 +189,7 @@ struct ppd_system
 BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data);
 BOOLEAN display_list(struct ppd_list * list);
 
-/* integrity check before adding to list */
+/* does integrity check before adding to list */
 BOOLEAN load_stock(struct ppd_list * list, char * string);
 
 /* return stock * with corresponding id, else NULL */
@@ -198,10 +199,13 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE]);
 /* return TRUE if data->stock_id is in system */
 BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data);
 BOOLEAN check_stock_id_regex(char * string);
+BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id);
+
 BOOLEAN check_price(char * price);
 BOOLEAN check_on_hand(char * onhand);
 
 /* returns price in cents, presumes input is valid,
+ * check_price and check_on_hand should be called before these functions
  * does not check if cent%5 == 0;
  */
 unsigned get_price(const char *str);

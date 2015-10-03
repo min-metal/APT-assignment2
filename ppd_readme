@@ -25,7 +25,7 @@
 
  * Stock file Loading
  There can be no duplicate ID.
- ID must follow format of 'I' + 4 integers
+ ID must follow format of 'I' + 4 integers, IDs do not have to be contiguous
  Description can be empty.
  Price field must not have empty dollar, have exactly 2 numbers in the cent field,
  and must have exactly 1 '.'. Cent must be divisible by 5.

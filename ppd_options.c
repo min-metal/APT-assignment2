@@ -144,12 +144,41 @@ BOOLEAN save_system(struct ppd_system * system)
  **/
 BOOLEAN add_item(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    char buffer[NO_ATTRIBUTE][DESCLEN + EXTRA_SPACE];
+    struct ppd_stock * new;
+
+    if(get_next_stock_id(system->item_list, buffer[ID]) == FALSE)
+    {
+        printf("Cannot add anymore items.\n");
+        return FALSE;
+    }
+    printf("This item will have an ID of (%s).\n", buffer[ID]);
+
+    if(getString(buffer[NAME], NAMELEN, "Enter the item name: ") != SUCCESS) {
+        return FALSE;
+    }
+    if(getString(buffer[DESC], DESCLEN,
+        "Enter the item description: ") != SUCCESS) {
+        return FALSE;
+    }
+    if(getString(buffer[PRICE], PRICELEN,
+        "Enter the price for this item: ") != SUCCESS) {
+        return FALSE;
+    }
+    sprintf(buffer[ONHAND], "%i", DEFAULT_STOCK_LEVEL);
+
+    if((new = new_stock(buffer)) == NULL)
+    {
+        fprintf(stderr, "Stock creation unsuccessful");
+        return FALSE;
+    }
+
+    assert(add_to_list(system->item_list, new));
+
+    printf("The item \"%s - %s\" has now been added to the menu.\n",
+           new->name, new->desc);
+
+    return TRUE;
 }
 
 /**

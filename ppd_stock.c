@@ -8,7 +8,7 @@
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
-#include "ppd_stock.h"
+/*#include "ppd_stock.h"*/
 #include "ppd_utility.h"
 
  /**
@@ -266,6 +266,36 @@ BOOLEAN check_stock_id_regex(char * string)
     for(i = 1; i < IDLEN; ++i)
         if(string[i] < '0' || string[i] > '9')
             return FALSE;
+    return TRUE;
+}
+
+BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id)
+{
+    char current_id[IDLEN +1] = FIRST_ID, * end;
+    struct ppd_node * current = list->head;
+    int id_num;
+
+    while(current != NULL)
+    {
+        if(strcmp(current->data->id, current_id) > 0)
+        {
+            strcpy(current_id, current->data->id);
+        }
+        current = current->next;
+    }
+    if(list->head == NULL) {
+        strcpy(next_id, current_id);
+        return TRUE;
+    }
+    if(strcmp(current_id, LAST_ID) == 0)
+    {
+        return FALSE;
+    }
+
+    id_num = ((int) strtol(current_id + 1, &end, 0)) + 1;
+    assert(*end == '\0');
+    sprintf(next_id, "%c%04i", ID_CHAR, id_num);
+
     return TRUE;
 }
 

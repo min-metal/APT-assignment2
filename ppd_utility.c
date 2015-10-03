@@ -149,6 +149,7 @@ char * read_from_file(const char * file_name)
     return buffer;
 }
 
+/* function source from lecture example */
 INPUT_RESULT getString(char* string, unsigned length, char* prompt)
 {
     int finished = FALSE;
@@ -210,7 +211,7 @@ INPUT_RESULT get_int(int * num, unsigned length, char * prompt)
     INPUT_RESULT input_result;
     int input_num;
 
-    temp = safe_malloc(sizeof(char) * (length + 2));
+    temp = safe_malloc(sizeof(char) * (length + 1));
 
     if((input_result = getString(temp, length, prompt)) != SUCCESS)
     {
