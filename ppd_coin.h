@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -18,6 +18,7 @@
 #define PPD_COIN
 #include "ppd_main.h"
 #define COIN_DELIM ','
+#define COIN_DELIM_STRING ","
 /* number of coin delims per line*/
 #define NO_COIN_DELIM 1
 #define NO_COIN_ATTRIBUTE 2
@@ -69,6 +70,7 @@ void init_register(struct coin cash_register[]);
 BOOLEAN print_register(struct coin cash_register[], BOOLEAN);
 BOOLEAN is_valid_denom(int denom, enum denomination * denom_enum);
 BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string);
+BOOLEAN serialize_coin(const char * file_name, struct coin cash_register[]);
 
 BOOLEAN add_to_register_from_string(struct coin *cash_register,
     char attributes[][COIN_LENGTH + 1], BOOLEAN *is_added);

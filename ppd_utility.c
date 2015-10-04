@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -122,15 +122,12 @@ void * safe_malloc(size_t size)
 /* from user 'lfzawacki', answered Aug 12 '10 at 3:56, accessed 19/09/15, used for educational purposes only */
 char * read_from_file(const char * file_name)
 {
-    /* TODO fix file path */
     FILE * ifp;
-    char file_path[100] = PATH;
+    /*char file_path[100] = PATH;*/
     char * buffer = NULL;
     long string_size;
 
-    strcat(file_path, file_name);
-
-    ifp = fopen(/*file_name*/ file_path, "r");
+    ifp = fopen(file_name /*file_path*/, "r");
 
     fseek(ifp, 0, SEEK_END);
     string_size = ftell(ifp);
@@ -243,7 +240,7 @@ int explode_input(char * string, const char delim)
 
     while(token != NULL)
     {
-        printf( "%s\n", token ); TODO remove printf
+        printf( "%s\n", token );
         token = strtok(NULL, delim);
         ++count;
     }*/

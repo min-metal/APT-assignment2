@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -249,6 +249,26 @@ BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
     }
 
     printf("Load successful\n");
+    return TRUE;
+}
+
+BOOLEAN serialize_coin(const char * file_name, struct coin cash_register[])
+{
+    int i;
+    FILE * fp;
+    char coin_buffer[COIN_LENGTH + 1];
+
+    fp = fopen(file_name, "w");
+    for(i = 0; i < NUM_DENOMS; ++i)
+    {
+        sprintf(coin_buffer, "%i", VALID_DENOM[cash_register[i].denom]);
+        fwrite(coin_buffer, sizeof(char), strlen(coin_buffer), fp);
+        fwrite(COIN_DELIM_STRING, sizeof(char), 1, fp);
+        sprintf(coin_buffer, "%u", cash_register[i].count);
+        fwrite(coin_buffer, sizeof(char), strlen(coin_buffer), fp);
+        fwrite("\n", sizeof(char), 1, fp);
+    }
+    fclose(fp);
     return TRUE;
 }
 

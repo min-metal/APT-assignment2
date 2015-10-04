@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -136,12 +136,32 @@ BOOLEAN purchase_item(struct ppd_system * system)
  **/
 BOOLEAN save_system(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    FILE * fp;
+    char price[PRICELEN + 1], onhand[ONHANDLEN + 1];
+    struct ppd_node * current = system->item_list->head;
+
+    fp = fopen(system->stock_file_name, "w");
+    while(current != NULL)
+    {
+        fwrite(current->data->id, sizeof(char), strlen(current->data->id), fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        fwrite(current->data->name, sizeof(char), strlen(current->data->name), fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        fwrite(current->data->desc, sizeof(char), strlen(current->data->desc), fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        sprintf(price, "%u.%02u", current->data->price.dollars, current->data->price.cents);
+        fwrite(price, sizeof(char), strlen(price), fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        sprintf(onhand, "%u", current->data->on_hand);
+        fwrite(onhand, sizeof(char), strlen(onhand), fp);
+        fwrite("\n", sizeof(char), 1, fp);
+        current = current->next;
+    }
+
+    serialize_coin(system->coin_file_name, system->cash_register);
+
+    fclose(fp);
+    return TRUE;
 }
 
 /**
@@ -176,7 +196,7 @@ BOOLEAN add_item(struct ppd_system * system)
 
     if((new = new_stock(buffer)) == NULL)
     {
-        fprintf(stderr, "Stock creation unsuccessful");
+        fprintf(stderr, "Stock creation unsuccessful.\n");
         return FALSE;
     }
 

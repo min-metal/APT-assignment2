@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -26,6 +26,7 @@
  **/
 
 #define STOCK_DELIM '|'
+#define STOCK_DELIM_STRING "|"
 
 /* number of inputs per line, number of attributes */
 #define NO_ATTRIBUTE 5

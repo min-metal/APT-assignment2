@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -25,7 +25,6 @@ BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
     if(check_stock_id_in_system(list, data))
     {
         fprintf(stderr, "Duplicate ID!\n");
-        free(data);
         return FALSE;
     }
 
@@ -156,6 +155,7 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
         }
         if(add_to_list(list, temp_stock) == FALSE)
         {
+            free(temp_stock);
             return FALSE;
         }
 

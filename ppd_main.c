@@ -1,10 +1,10 @@
 /***********************************************************************
  * COSC1076 - Advanced Programming Techniques
  * Semester 2 2015 Assignment #2
- * Full Name        : EDIT HERE
- * Student Number   : EDIT HERE
- * Course Code      : EDIT HERE
- * Program Code     : EDIT HERE
+ * Full Name        : Tuan Minh Tran
+ * Student Number   : s3488978
+ * Course Code      : COSC1076
+ * Program Code     : BP094
  * Start up code provided by Paul Miller
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
@@ -31,7 +31,7 @@ int main(int argc, char ** argv)
     FILE * stock, * coins;
 
     /* validate command line arguments */
-    if (argc != 3)
+    if (argc != NUM_ARGS)
     {
         printf("Invalid arguments\n");
         printf("Expecting ./ppd <itemsfile> <coinsfile>\n");
