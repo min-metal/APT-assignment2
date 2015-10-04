@@ -26,7 +26,6 @@
  **/
 
 #define STOCK_DELIM '|'
-#define STOCK_DELIM_STRING "|"
 
 /* number of inputs per line, number of attributes */
 #define NO_ATTRIBUTE 5
@@ -187,6 +186,7 @@ struct ppd_system
 };
 
 BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data);
+BOOLEAN remove_from_list(struct ppd_list * list, struct ppd_stock * data);
 BOOLEAN display_list(struct ppd_list * list);
 
 /* does integrity check before adding to list */
@@ -200,6 +200,10 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE]);
 BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data);
 BOOLEAN check_stock_id_regex(char * string);
 BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id);
+
+BOOLEAN set_stock_level(struct ppd_list * list, struct ppd_stock * to_set,
+                        unsigned amount);
+void reset_all_stock_level(struct ppd_list * list);
 
 BOOLEAN check_price(char * price);
 BOOLEAN check_on_hand(char * onhand);

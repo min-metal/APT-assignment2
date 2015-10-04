@@ -142,6 +142,16 @@ BOOLEAN remove_from_register(struct coin cash_register[], struct coin to_remove[
     return TRUE;
 }
 
+void reset_register(struct coin cash_register[])
+{
+    int i;
+
+    for(i = 0; i < NUM_DENOMS; ++i)
+    {
+        cash_register[i].count = DEFAULT_COIN_COUNT;
+    }
+}
+
 BOOLEAN get_change(int change_needed, struct coin cash_register[], struct coin change[])
 {
     int i, change_remaining = change_needed;

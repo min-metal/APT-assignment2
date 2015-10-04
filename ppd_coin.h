@@ -66,14 +66,18 @@ struct coin
 };
 
 void init_register(struct coin cash_register[]);
-BOOLEAN print_register(struct coin cashregister[], BOOLEAN);
+BOOLEAN print_register(struct coin cash_register[], BOOLEAN);
 BOOLEAN is_valid_denom(int denom, enum denomination * denom_enum);
 BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string);
+
 BOOLEAN add_to_register_from_string(struct coin *cash_register,
-                                    char attributes[][COIN_LENGTH + 1], BOOLEAN *is_added);
+    char attributes[][COIN_LENGTH + 1], BOOLEAN *is_added);
 
 BOOLEAN add_to_register(struct coin cash_register[], struct coin to_add[]);
-BOOLEAN remove_from_register(struct coin cash_register[], struct coin to_remove[]);
+BOOLEAN remove_from_register(struct coin cash_register[],
+    struct coin to_remove[]);
+void reset_register(struct coin cash_register[]);
 
-BOOLEAN get_change(int change_needed, struct coin cash_register[], struct coin change[]);
+BOOLEAN get_change(int change_needed, struct coin cash_register[],
+    struct coin change[]);
 #endif

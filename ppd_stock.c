@@ -59,7 +59,38 @@ BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
     list->count++;
 
     return TRUE;
+}
 
+BOOLEAN remove_from_list(struct ppd_list * list, struct ppd_stock * data)
+{
+    struct ppd_node * current, * previous;
+    previous = NULL;
+    current = list->head;
+
+    while(current != NULL)
+    {
+        if(current->data == data)
+            break;
+        previous = current;
+        current = current->next;
+    }
+    if(current == NULL)
+        return FALSE;
+
+    if(previous == NULL)
+    {
+        list->head = current->next;
+    }
+    else
+    {
+        previous->next = current->next;
+    }
+
+    free(current->data);
+    free(current);
+
+    --list->count;
+    return TRUE;
 }
 
 BOOLEAN display_list(struct ppd_list * list)
@@ -79,7 +110,6 @@ BOOLEAN display_list(struct ppd_list * list)
 
         current = current->next;
     }
-
     return TRUE;
 }
 
@@ -261,7 +291,7 @@ BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data)
 BOOLEAN check_stock_id_regex(char * string)
 {
     int i;
-    if(string[0] != 'I')
+    if(string[0] != ID_CHAR)
         return FALSE;
     for(i = 1; i < IDLEN; ++i)
         if(string[i] < '0' || string[i] > '9')
@@ -297,6 +327,35 @@ BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id)
     sprintf(next_id, "%c%04i", ID_CHAR, id_num);
 
     return TRUE;
+}
+
+BOOLEAN set_stock_level(struct ppd_list * list, struct ppd_stock * to_set,
+                     unsigned amount)
+{
+    struct ppd_node * current = list->head;
+
+    while(current != NULL)
+    {
+        if(current->data == to_set)
+        {
+            current->data->on_hand = amount;
+            return TRUE;
+        }
+        current = current->next;
+    }
+    return FALSE;
+
+}
+
+void reset_all_stock_level(struct ppd_list * list)
+{
+    struct ppd_node * current = list->head;
+
+    while(current != NULL)
+    {
+        current->data->on_hand = DEFAULT_STOCK_LEVEL;
+        current = current->next;
+    }
 }
 
 BOOLEAN check_price(char * price)

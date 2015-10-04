@@ -9,10 +9,8 @@
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
 
-#include "ppd_main.h"
 #include "ppd_menu.h"
 #include "ppd_options.h"
-#include "ppd_utility.h"
 
 /**
  * @file ppd_main.c contains the main function implementation and any 
@@ -29,32 +27,28 @@ int main(int argc, char ** argv)
 {
     /* represents the data structures to manage the system */
     struct ppd_system system;
+    struct menu_item menu[NUM_OPTIONS];
     FILE * stock, * coins;
 
     /* validate command line arguments */
-    if (argc != /*3*/ 1)
+    if (argc != 3)
     {
         printf("Invalid arguments\n");
+        printf("Expecting ./ppd <itemsfile> <coinsfile>\n");
         return EXIT_FAILURE;
     }
 
-    /* Remember to fix */
-    if ((stock = fopen(/*argv[1]*/ PATH "stock.dat", "r")) == NULL)
+    /* TODO Remember to fix */
+    if ((stock = fopen(argv[1] /*PATH "stock.dat"*/, "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
         return EXIT_FAILURE;
     }
-    if ((coins = fopen(/*argv[2]*/ PATH "coins.dat", "r")) == NULL)
+    if ((coins = fopen(argv[2] /*PATH "coins.dat"*/, "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
         return EXIT_FAILURE;
     }
-
-/*    while((c = getc(coins)) != EOF)
-    {
-        printf("%c", c);
-    }*/
-
 
     /* init the system */
     if(system_init(&system) == FALSE)
@@ -63,8 +57,8 @@ int main(int argc, char ** argv)
     }
 
 
-    /* load data */
-    if (load_data(&system, "coins.dat", "stock.dat") == FALSE)
+    /* test if everything has been initialised correctly */
+    if (load_data(&system, argv[2]/*"coins.dat"*/, argv[1]/*"stock.dat"*/) == FALSE)
     {
         printf("Load data failed!\n");
         system_free(&system);
@@ -73,29 +67,40 @@ int main(int argc, char ** argv)
         return EXIT_FAILURE;
     }
 
-    display_items(&system);
-    print_register(system.cash_register, FALSE);
-    purchase_item(&system);
-    print_register(system.cash_register, FALSE);
-    add_item(&system);
-    display_items(&system);
-
-
-    /* test if everything has been initialised correctly */
-
     /* initialise the menu system */
+    init_menu(menu);
 
     /* loop, asking for options from the menu */
+    while(1)
+    {
+        int chosen;
+        INPUT_RESULT input_result;
+        BOOLEAN operation_result;
 
-    /* run each option selected */
+        display_menu(menu);
+        input_result=get_int(&chosen,DEFAULT_INPUT_LEN,"Select your option: ");
+        if(input_result != SUCCESS ||
+                chosen < 0 || chosen > NUM_OPTIONS)
+            continue;
 
-    /* until the user quits */
+        if(menu[chosen - 1].function == NULL)
+            break;
+
+        /* run each option selected */
+        operation_result = menu[chosen - 1].function(&system);
+        if(operation_result)
+            printf("Operation successful.\n");
+        else
+            printf("Operation failed.\n");
+
+        /* until the user quits */
+        if(menu[chosen - 1].function == save_system)
+            break;
+    }
 
     /* make sure you always free all memory and close all files 
      * before you exit the program
      */
-
-
     system_free(&system);
     fclose(stock);
     fclose(coins);

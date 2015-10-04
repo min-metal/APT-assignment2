@@ -15,6 +15,8 @@
 #include "ppd_stock.h"
 #ifndef PPD_UTILITY
 #define PPD_UTILITY
+#define DEFAULT_INPUT_LEN 20
+
 /**
  * @file ppd_utility.h defines some helper functions for the rest of your
  * program. In particular, it declares three of the most important 

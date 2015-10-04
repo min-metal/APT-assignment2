@@ -9,7 +9,6 @@
  * Some codes are adopted here with permission by an anonymous author
  ***********************************************************************/
 
-#include "ppd_main.h"
 #include "ppd_stock.h"
 /**
  * @file ppd_menu.h defines the @ref menu_item type and the init_menu 
@@ -21,6 +20,8 @@
  * The maximum length of a menu item's text
  **/
 #define MENU_NAME_LEN 50
+
+#define NUM_OPTIONS 9
 
 /**
  * represents a menu item to be displayed and executed in the program
@@ -52,4 +53,5 @@ struct menu_item
  * code more readable.
  **/
 void init_menu( struct menu_item*);
+void display_menu(struct menu_item * menu);
 #endif

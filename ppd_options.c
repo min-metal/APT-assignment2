@@ -12,7 +12,7 @@
 #include "ppd_options.h"
 
 /**
- * @file ppd_options.c this is where you need to implement the main 
+ * @file ppd_options.c this is where you need to implement the main
  * options for your program. You may however have the actual work done
  * in functions defined elsewhere. 
  * @note if there is an error you should handle it within the function
@@ -28,7 +28,8 @@
  **/
 BOOLEAN display_items(struct ppd_system * system)
 {
-    return display_list(system->item_list);
+    assert(display_list(system->item_list));
+    return TRUE;
 }
 
 /**
@@ -62,10 +63,14 @@ BOOLEAN purchase_item(struct ppd_system * system)
         printf("Stock ID is not in system!\n");
         return FALSE;
     }
+    if(temp_stock->on_hand == 0){
+        printf("The item selected has been exhausted.\n");
+        return FALSE;
+    }
 
     printf("You have selected \"%s - %s\". This will cost you $%.2f.\n",
     temp_stock->name, temp_stock->desc,
-       (float)(temp_stock->price.dollars * DOLLAR_TO_CENT + temp_stock->price.cents) /
+    (float)(temp_stock->price.dollars*DOLLAR_TO_CENT+temp_stock->price.cents)/
            DOLLAR_TO_CENT
     );
 
@@ -117,6 +122,8 @@ BOOLEAN purchase_item(struct ppd_system * system)
         return FALSE;
     }
 
+    assert(set_stock_level(system->item_list, temp_stock,
+        temp_stock->on_hand - 1));
     printf("\n/** CHANGE GIVEN **/");
     print_register(denom_change, TRUE);
     return TRUE;
@@ -188,12 +195,26 @@ BOOLEAN add_item(struct ppd_system * system)
  **/
 BOOLEAN remove_item(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    struct ppd_stock * to_remove;
+    char id[IDLEN + 1];
+
+    if(getString(id, IDLEN, "Enter ID of the item you wish to remove: ")
+       != SUCCESS) {
+        return FALSE;
+    }
+
+    if((to_remove = get_stock_by_id(system->item_list, id)) == NULL)
+    {
+        printf("ID does not exist!\n");
+        return FALSE;
+    }
+
+    printf("The item \"%s - %s\" has been removed from the system.\n",
+           to_remove->name, to_remove->desc);
+
+    assert(remove_from_list(system->item_list, to_remove));
+
+    return TRUE;
 }
 
 /**
@@ -203,12 +224,8 @@ BOOLEAN remove_item(struct ppd_system * system)
  **/
 BOOLEAN reset_stock(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    reset_all_stock_level(system->item_list);
+    return TRUE;
 }
 
 /**
@@ -218,12 +235,8 @@ BOOLEAN reset_stock(struct ppd_system * system)
  **/
 BOOLEAN reset_coins(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    reset_register(system->cash_register);
+    return TRUE;
 }
 
 /**
@@ -233,10 +246,6 @@ BOOLEAN reset_coins(struct ppd_system * system)
  **/
 BOOLEAN display_coins(struct ppd_system * system)
 {
-    /*
-     * Please delete this default return value once this function has 
-     * been implemented. Please note that it is convention that until
-     * a function has been implemented it should return FALSE
-     */
-    return FALSE;
+    print_register(system->cash_register, FALSE);
+    return TRUE;
 }
