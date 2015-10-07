@@ -48,6 +48,28 @@ BOOLEAN print_register(struct coin cashregister[], BOOLEAN omit_empty)
     return TRUE;
 }
 
+void print_change(struct coin change[])
+{
+    int i, total =0;
+    for(i = 0; i < NUM_DENOMS; ++i)
+    {
+        total += VALID_DENOM[change[i].denom] * change[i].count;
+    }
+
+    printf("\nHere is your change of $%.2f: ", (float)total / DOLLAR_TO_CENT);
+    for(i = NUM_DENOMS; i >= 0; --i)
+    {
+        if(change[i].count == 0)
+            continue;
+
+        printf("%s * %i",
+               DENOM_STRING[change[i].denom], change[i].count);
+        if(i != 0)
+            printf(", ");
+    }
+    printf(".\n");
+}
+
 BOOLEAN add_to_register_from_string(struct coin *cash_register,
                         char attributes[][COIN_LENGTH + 1], BOOLEAN is_added[])
 {

@@ -16,24 +16,24 @@
  * array
  **/
 BOOLEAN (*option_functions[NUM_OPTIONS])(struct ppd_system *) =
-    {
-        display_items, purchase_item, save_system, add_item,
-        remove_item, display_coins, reset_stock, reset_coins, NULL
-    };
+{
+    display_items, purchase_item, save_system, add_item,
+    remove_item, display_coins, reset_stock, reset_coins, NULL
+};
 
 
 const char * options_display[NUM_OPTIONS] =
-    {
-        "1. Display Items",
-        "2. Purchase Items",
-        "3. Save and Exit",
-        "4. Add Item",
-        "5. Remove Item",
-        "6. Display Coins",
-        "7. Reset Stock",
-        "8. Reset Coins",
-        "9. Abort Program"
-    };
+{
+    "1. Display Items",
+    "2. Purchase Items",
+    "3. Save and Exit",
+    "4. Add Item",
+    "5. Remove Item",
+    "6. Display Coins",
+    "7. Reset Stock",
+    "8. Reset Coins",
+    "9. Abort Program"
+};
 
 /**
  * @param menu the menu item array to initialise
@@ -54,7 +54,7 @@ void display_menu(struct menu_item * menu)
     printf("\nMain Menu\n");
     for(i = 0; i < NUM_OPTIONS; ++i)
     {
-        if(i == 3)
+        if(i == ADMIN_INDEX)
             printf("Administrator-Only Menu:\n");
         printf("    %s\n", (menu + i)->name);
     }

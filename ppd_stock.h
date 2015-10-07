@@ -200,6 +200,7 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE]);
 /* return TRUE if data->stock_id is in system */
 BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data);
 BOOLEAN check_stock_id_regex(char * string);
+BOOLEAN check_user_input(char input[][DESCLEN + EXTRA_SPACE]);
 BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id);
 
 BOOLEAN set_stock_level(struct ppd_list * list, struct ppd_stock * to_set,

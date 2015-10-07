@@ -299,6 +299,23 @@ BOOLEAN check_stock_id_regex(char * string)
     return TRUE;
 }
 
+BOOLEAN check_user_input(char input[][DESCLEN + EXTRA_SPACE])
+{
+    int i;
+    char * p;
+    for (i = 0; i < NO_ATTRIBUTE; ++i)
+    {
+        p = input[i];
+        while(*p)
+        {
+            if(*p == STOCK_DELIM)
+                return FALSE;
+            ++p;
+        }
+    }
+    return TRUE;
+}
+
 BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id)
 {
     char current_id[IDLEN +1] = FIRST_ID, * end;

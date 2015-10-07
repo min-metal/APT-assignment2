@@ -80,7 +80,7 @@ int main(int argc, char ** argv)
         display_menu(menu);
         input_result=get_int(&chosen,DEFAULT_INPUT_LEN,"Select your option: ");
         if(input_result != SUCCESS ||
-                chosen < 0 || chosen > NUM_OPTIONS)
+                chosen <= 0 || chosen > NUM_OPTIONS)
             continue;
 
         if(menu[chosen - 1].function == NULL)

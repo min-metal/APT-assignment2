@@ -125,7 +125,8 @@ BOOLEAN purchase_item(struct ppd_system * system)
     assert(set_stock_level(system->item_list, temp_stock,
         temp_stock->on_hand - 1));
     printf("\n/** CHANGE GIVEN **/");
-    print_register(denom_change, TRUE);
+    /*print_register(denom_change, TRUE);*/
+    print_change(denom_change);
     return TRUE;
 }
 
@@ -193,6 +194,12 @@ BOOLEAN add_item(struct ppd_system * system)
         return FALSE;
     }
     sprintf(buffer[ONHAND], "%i", DEFAULT_STOCK_LEVEL);
+
+    if(check_user_input(buffer) == FALSE)
+    {
+        fprintf(stderr, "Input must not contain '%c'.\n", STOCK_DELIM);
+        return FALSE;
+    }
 
     if((new = new_stock(buffer)) == NULL)
     {

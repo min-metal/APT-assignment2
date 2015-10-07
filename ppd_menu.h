@@ -23,6 +23,9 @@
 
 #define NUM_OPTIONS 9
 
+/* point where admin menu occurs */
+#define ADMIN_INDEX 3
+
 /**
  * represents a menu item to be displayed and executed in the program
  **/
