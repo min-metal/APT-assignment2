@@ -38,7 +38,6 @@ int main(int argc, char ** argv)
         return EXIT_FAILURE;
     }
 
-    /* TODO Remember to fix */
     if ((stock = fopen(argv[1] /*PATH "stock.dat"*/, "r")) == NULL)
     {
         fprintf(stderr, "File open error\n");
@@ -58,7 +57,7 @@ int main(int argc, char ** argv)
 
 
     /* test if everything has been initialised correctly */
-    if (load_data(&system, argv[2]/*"coins.dat"*/, argv[1]/*"stock.dat"*/) == FALSE)
+    if (load_data(&system, argv[2], argv[1]) == FALSE)
     {
         printf("Load data failed!\n");
         system_free(&system);

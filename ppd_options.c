@@ -144,13 +144,16 @@ BOOLEAN save_system(struct ppd_system * system)
     fp = fopen(system->stock_file_name, "w");
     while(current != NULL)
     {
-        fwrite(current->data->id, sizeof(char), strlen(current->data->id), fp);
+        fwrite(current->data->id, sizeof(char), strlen(current->data->id),fp);
         fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        fwrite(current->data->name, sizeof(char), strlen(current->data->name), fp);
+        fwrite(current->data->name, sizeof(char), strlen(current->data->name),
+               fp);
         fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        fwrite(current->data->desc, sizeof(char), strlen(current->data->desc), fp);
+        fwrite(current->data->desc, sizeof(char), strlen(current->data->desc),
+               fp);
         fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        sprintf(price, "%u.%02u", current->data->price.dollars, current->data->price.cents);
+        sprintf(price, "%u.%02u", current->data->price.dollars,
+                current->data->price.cents);
         fwrite(price, sizeof(char), strlen(price), fp);
         fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
         sprintf(onhand, "%u", current->data->on_hand);

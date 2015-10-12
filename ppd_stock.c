@@ -11,11 +11,9 @@
 /*#include "ppd_stock.h"*/
 #include "ppd_utility.h"
 
- /**
-  * @file ppd_stock.c this is the file where you will implement the
-  * interface functions for managing the stock list.
-  **/
-
+/*
+ * standard adding data to linked list, sorted by name ascending
+ */
 BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
 {
     struct ppd_node * previous = NULL;
@@ -60,6 +58,9 @@ BOOLEAN add_to_list(struct ppd_list * list, struct ppd_stock * data)
     return TRUE;
 }
 
+/*
+ * remove form linked list
+ */
 BOOLEAN remove_from_list(struct ppd_list * list, struct ppd_stock * data)
 {
     struct ppd_node * current, * previous;
@@ -92,6 +93,9 @@ BOOLEAN remove_from_list(struct ppd_list * list, struct ppd_stock * data)
     return TRUE;
 }
 
+/*
+ * formatted printing of data in linked list
+ */
 BOOLEAN display_list(struct ppd_list * list)
 {
     struct ppd_node * current;
@@ -99,7 +103,8 @@ BOOLEAN display_list(struct ppd_list * list)
 
     printf("\nItems Menu\n");
     printf("%-6s|%-40s|%-10s|%-6s\n", "ID", "Name", "Available", "Price");
-    printf("-----------------------------------------------------------------\n");
+    printf("-----------------------------------------------------------------"
+                   "\n");
     while(current != NULL)
     {
         printf("%-6s|%-40s|%-10u|$%5.2f\n",
@@ -112,6 +117,9 @@ BOOLEAN display_list(struct ppd_list * list)
     return TRUE;
 }
 
+/*
+ * loading from stock file string into system linked list
+ */
 BOOLEAN load_stock(struct ppd_list * list, char * string)
 {
     int number_of_lines = 0, j, successful_read = 0;
@@ -131,7 +139,8 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
         {
             fprintf(stderr, "Wrong number of delimiters! Must have %i '%c'.\n"
                     , NO_STOCK_DELIMS, STOCK_DELIM);
-            printf("Each data entry must end in '\\n', with no empty lines.\n");
+            printf("Each data entry must end in '\\n', with no empty lines.\n")
+                    ;
             return FALSE;
         }
 
@@ -141,7 +150,8 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
         {
             if ((str_len = strlen(start)) > DESCLEN)
             {
-                fprintf(stderr, "One or more field contains too many characters\n");
+                fprintf(stderr,
+                        "One or more field contains too many characters\n");
                 return FALSE;
             }
             strcpy(temp[j], start);
@@ -174,6 +184,9 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
     return TRUE;
 }
 
+/*
+ * @return struct ppd_stock * of @param stock_id if is in @param list.
+ */
 struct ppd_stock * get_stock_by_id(struct ppd_list * list, char * stock_id)
 {
     struct ppd_node * current;
@@ -191,6 +204,10 @@ struct ppd_stock * get_stock_by_id(struct ppd_list * list, char * stock_id)
 
 }
 
+/*
+ * creates new stock from array of strings, which contains delimited
+ * attributes of each stock item. returns * to newly malloc'ed stock.
+ */
 struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
 {
     unsigned price, on_hand;
@@ -272,6 +289,9 @@ struct ppd_stock * new_stock(char attributes[][DESCLEN + EXTRA_SPACE])
     return stock;
 }
 
+/*
+ * checks if *data is in *list
+ */
 BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data)
 {
     struct ppd_node * current;
@@ -288,6 +308,9 @@ BOOLEAN check_stock_id_in_system(struct ppd_list *list, struct ppd_stock *data)
     return FALSE;
 }
 
+/*
+ * checks if string(stock id) is in the correct format
+ */
 BOOLEAN check_stock_id_regex(char * string)
 {
     int i;
@@ -299,6 +322,9 @@ BOOLEAN check_stock_id_regex(char * string)
     return TRUE;
 }
 
+/*
+ * checks if user input contains any invalid characters (|)
+ */
 BOOLEAN check_user_input(char input[][DESCLEN + EXTRA_SPACE])
 {
     int i;
@@ -316,6 +342,10 @@ BOOLEAN check_user_input(char input[][DESCLEN + EXTRA_SPACE])
     return TRUE;
 }
 
+/*
+ * set @param next_id to id that is after the largest id.
+ * returns FALSE if limit of ID is reached
+ */
 BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id)
 {
     char current_id[IDLEN +1] = FIRST_ID, * end;
@@ -346,6 +376,10 @@ BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id)
     return TRUE;
 }
 
+/*
+ * set stock level of a particular stock (@param to_set) to amount
+ * returns FALSE if to_set is not in list
+ */
 BOOLEAN set_stock_level(struct ppd_list * list, struct ppd_stock * to_set,
                      unsigned amount)
 {
@@ -364,6 +398,9 @@ BOOLEAN set_stock_level(struct ppd_list * list, struct ppd_stock * to_set,
 
 }
 
+/*
+ * reset all stock level in list to default stock level
+ */
 void reset_all_stock_level(struct ppd_list * list)
 {
     struct ppd_node * current = list->head;
@@ -375,6 +412,9 @@ void reset_all_stock_level(struct ppd_list * list)
     }
 }
 
+/*
+ * check if string corresponding to price is in correct format
+ */
 BOOLEAN check_price(char * price)
 {
     int i = 0, cent_count = 0;
@@ -413,6 +453,9 @@ BOOLEAN check_price(char * price)
     return TRUE;
 }
 
+/*
+ * check if string corresponding to onhand field is in correct format
+ */
 BOOLEAN check_on_hand(char * onhand)
 {
     int i = 0;
@@ -430,6 +473,9 @@ BOOLEAN check_on_hand(char * onhand)
     return TRUE;
 }
 
+/*
+ * get price from string, returns unsigned
+ */
 unsigned get_price(const char * str)
 {
     char * end;
@@ -441,6 +487,9 @@ unsigned get_price(const char * str)
     return dollar * DOLLAR_TO_CENT + cent;
 }
 
+/*
+ * get on_hand from string, returns unsigned
+ */
 unsigned get_on_hand(const char * str)
 {
     char * end;

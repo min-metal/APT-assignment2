@@ -104,6 +104,9 @@ void system_free(struct ppd_system * system)
 
 }
 
+/*
+ * safe malloc, exit if unsuccesful malloc'ed
+ */
 void * safe_malloc(size_t size)
 {
     void * returnPointer;
@@ -118,8 +121,11 @@ void * safe_malloc(size_t size)
     }
 }
 
-/* sourced from http://stackoverflow.com/questions/3463426/in-c-how-should-i-read-a-text-file-and-print-all-strings */
-/* from user 'lfzawacki', answered Aug 12 '10 at 3:56, accessed 19/09/15, used for educational purposes only */
+/* sourced from http://stackoverflow.com/questions/3463426/
+in-c-how-should-i-read-a-text-file-and-print-all-strings */
+/* from user 'lfzawacki', answered Aug 12 '10 at 3:56, accessed 19/09/15,
+ * used for educational purposes only
+ */
 char * read_from_file(const char * file_name)
 {
     FILE * ifp;
@@ -146,7 +152,10 @@ char * read_from_file(const char * file_name)
     return buffer;
 }
 
-/* function source from lecture example */
+/* function source from lecture example, on coreteaching server
+ * ~/el9/E70949/shared/2015/helper-functions/getString-advanced.c
+ * accessed 01/10/2015
+ */
 INPUT_RESULT getString(char* string, unsigned length, char* prompt)
 {
     int finished = FALSE;
@@ -230,7 +239,9 @@ INPUT_RESULT get_int(int * num, unsigned length, char * prompt)
     return SUCCESS;
 }
 
-
+/*
+ * converts all occurrences of @param delim from @param string to nul
+ */
 int explode_input(char * string, const char delim)
 {
     int count = 1;
@@ -257,6 +268,9 @@ int explode_input(char * string, const char delim)
     return count;
 }
 
+/*
+ * count the number of @param c, in string
+ */
 int count_delim_in_string(const void * str, int c)
 {
     int count = 0;

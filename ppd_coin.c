@@ -19,6 +19,9 @@ const char *DENOM_STRING[] = {
         "1 dollar", "2 dollar", "5 dollar", "10 dollar"
 };
 
+/*
+ * initializes the register, sets all count to 0
+ */
 void init_register(struct coin cash_register[])
 {
     int i;
@@ -29,6 +32,10 @@ void init_register(struct coin cash_register[])
     }
 }
 
+/*
+ * formatted printing of register, option to omit denominations that are
+ * empty
+ */
 BOOLEAN print_register(struct coin cashregister[], BOOLEAN omit_empty)
 {
     int i;
@@ -48,6 +55,9 @@ BOOLEAN print_register(struct coin cashregister[], BOOLEAN omit_empty)
     return TRUE;
 }
 
+/*
+ * formatted printing of change given
+ */
 void print_change(struct coin change[])
 {
     int i, total =0;
@@ -70,8 +80,13 @@ void print_change(struct coin change[])
     printf(".\n");
 }
 
+/*
+ * convert array of strings, which contains denom and qty, and add it to
+ * cash_register, set is_added[i] to TRUE, where i = (enum denom) of
+ * coin added.
+ */
 BOOLEAN add_to_register_from_string(struct coin *cash_register,
-                        char attributes[][COIN_LENGTH + 1], BOOLEAN is_added[])
+                    char attributes[][COIN_LENGTH + 1], BOOLEAN is_added[])
 {
     char *current, * end;
     long denom, qty;
@@ -126,6 +141,10 @@ BOOLEAN add_to_register_from_string(struct coin *cash_register,
     return TRUE;
 }
 
+/*
+ * adding coins to cash register, from another array of struct coin,
+ * the denomination of both should be the same.
+ */
 BOOLEAN add_to_register(struct coin cash_register[], struct coin to_add[])
 {
     int i;
@@ -145,7 +164,13 @@ BOOLEAN add_to_register(struct coin cash_register[], struct coin to_add[])
     return TRUE;
 }
 
-BOOLEAN remove_from_register(struct coin cash_register[], struct coin to_remove[])
+/*
+ * removing coins from cash_register from another struct coin array,
+ * the denomination in both should be the same. returns FALSE, if
+ * removing coin will result in value < 0
+ */
+BOOLEAN remove_from_register(struct coin cash_register[],
+                             struct coin to_remove[])
 {
     int i;
 
@@ -164,6 +189,9 @@ BOOLEAN remove_from_register(struct coin cash_register[], struct coin to_remove[
     return TRUE;
 }
 
+/*
+ * reset register to default coin count
+ */
 void reset_register(struct coin cash_register[])
 {
     int i;
@@ -174,7 +202,17 @@ void reset_register(struct coin cash_register[])
     }
 }
 
-BOOLEAN get_change(int change_needed, struct coin cash_register[], struct coin change[])
+/*
+ * gives change, sets struct coin change[] to amount of change needed,
+ * removes change from cashe_register
+ *
+ * @param change_needed, amount of change needed in cents
+ * @param cash_register, system cash register
+ * @param change, array of struct coin to be altered, which equates to
+ * change_needed when added up
+ */
+BOOLEAN get_change(int change_needed, struct coin cash_register[],
+                   struct coin change[])
 {
     int i, change_remaining = change_needed;
     struct coin temp[NUM_DENOMS], cash_register_copy[NUM_DENOMS];
@@ -209,6 +247,9 @@ BOOLEAN get_change(int change_needed, struct coin cash_register[], struct coin c
     return TRUE;
 }
 
+/*
+ * does the loading from data string into the system
+ */
 BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
 {
     int number_of_lines = 0, i, successful_read = 0;
@@ -229,7 +270,8 @@ BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
         {
             fprintf(stderr, "Wrong number of delimiters! Must have %i '%c'.\n"
                     , NO_COIN_DELIM, COIN_DELIM);
-            printf("Each data entry must end in '\\n', with no empty lines.\n");
+            printf("Each data entry must end in '\\n', "
+                           "with no empty lines.\n");
             return FALSE;
         }
 
@@ -238,14 +280,15 @@ BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
         {
             if ((str_len = strlen(start)) > COIN_LENGTH)
             {
-                fprintf(stderr, "One or more field contains too many characters\n");
+                fprintf(stderr, "One or more field contains too many "
+                        "characters\n");
                 return FALSE;
             }
             strcpy(temp[i], start);
             start += str_len + 1;
         }
 
-        if(add_to_register_from_string(cash_register, temp, is_added) == FALSE)
+        if(add_to_register_from_string(cash_register, temp, is_added)==FALSE)
         {
             return FALSE;
         }
@@ -274,6 +317,9 @@ BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
     return TRUE;
 }
 
+/*
+ * writes system cash_register to file
+ */
 BOOLEAN serialize_coin(const char * file_name, struct coin cash_register[])
 {
     int i;
@@ -294,6 +340,10 @@ BOOLEAN serialize_coin(const char * file_name, struct coin cash_register[])
     return TRUE;
 }
 
+/*
+ * checks if int demon in cents is a valid denomination,
+ * if valid, sets denom_enum to the corresponding enum denomination
+ */
 BOOLEAN is_valid_denom(int denom, enum denomination * denom_enum)
 {
     int i = 0;

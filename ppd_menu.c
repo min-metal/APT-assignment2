@@ -15,13 +15,19 @@
  * @file ppd_menu.c handles the initialised and management of the menu 
  * array
  **/
+
+/*
+ * array of function pointers for menu to be mapped to
+ */
 BOOLEAN (*option_functions[NUM_OPTIONS])(struct ppd_system *) =
 {
     display_items, purchase_item, save_system, add_item,
     remove_item, display_coins, reset_stock, reset_coins, NULL
 };
 
-
+/*
+ * array of strings for menu to be mapped to
+ */
 const char * options_display[NUM_OPTIONS] =
 {
     "1. Display Items",
@@ -48,6 +54,9 @@ void init_menu( struct menu_item* menu)
     }
 }
 
+/*
+ * formatted priting of menu
+ */
 void display_menu(struct menu_item * menu)
 {
     int i;
