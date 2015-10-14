@@ -185,6 +185,41 @@ BOOLEAN load_stock(struct ppd_list * list, char * string)
 }
 
 /*
+ * Write stock to file
+ */
+BOOLEAN serialize_stock(const char * file_name, const struct ppd_list * list)
+{
+    FILE * fp;
+    char price[PRICELEN + 1], onhand[ONHANDLEN + 1];
+    struct ppd_node * current = list->head;
+
+    fp = fopen(file_name, "w");
+    assert(fp != NULL);
+    while(current != NULL)
+    {
+        fwrite(current->data->id, sizeof(char), strlen(current->data->id),fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        fwrite(current->data->name, sizeof(char), strlen(current->data->name),
+               fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        fwrite(current->data->desc, sizeof(char), strlen(current->data->desc),
+               fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        sprintf(price, "%u.%02u", current->data->price.dollars,
+                current->data->price.cents);
+        fwrite(price, sizeof(char), strlen(price), fp);
+        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
+        sprintf(onhand, "%u", current->data->on_hand);
+        fwrite(onhand, sizeof(char), strlen(onhand), fp);
+        fwrite("\n", sizeof(char), 1, fp);
+        current = current->next;
+    }
+
+    fclose(fp);
+    return TRUE;
+}
+
+/*
  * @return struct ppd_stock * of @param stock_id if is in @param list.
  */
 struct ppd_stock * get_stock_by_id(struct ppd_list * list, char * stock_id)

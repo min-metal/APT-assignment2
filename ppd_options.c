@@ -137,34 +137,9 @@ BOOLEAN purchase_item(struct ppd_system * system)
  **/
 BOOLEAN save_system(struct ppd_system * system)
 {
-    FILE * fp;
-    char price[PRICELEN + 1], onhand[ONHANDLEN + 1];
-    struct ppd_node * current = system->item_list->head;
-
-    fp = fopen(system->stock_file_name, "w");
-    while(current != NULL)
-    {
-        fwrite(current->data->id, sizeof(char), strlen(current->data->id),fp);
-        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        fwrite(current->data->name, sizeof(char), strlen(current->data->name),
-               fp);
-        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        fwrite(current->data->desc, sizeof(char), strlen(current->data->desc),
-               fp);
-        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        sprintf(price, "%u.%02u", current->data->price.dollars,
-                current->data->price.cents);
-        fwrite(price, sizeof(char), strlen(price), fp);
-        fwrite(STOCK_DELIM_STRING, sizeof(char), 1, fp);
-        sprintf(onhand, "%u", current->data->on_hand);
-        fwrite(onhand, sizeof(char), strlen(onhand), fp);
-        fwrite("\n", sizeof(char), 1, fp);
-        current = current->next;
-    }
-
+    serialize_stock(system->stock_file_name, system->item_list);
     serialize_coin(system->coin_file_name, system->cash_register);
 
-    fclose(fp);
     return TRUE;
 }
 

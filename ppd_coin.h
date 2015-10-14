@@ -71,7 +71,7 @@ BOOLEAN print_register(struct coin cash_register[], BOOLEAN);
 void print_change(struct coin change[]);
 BOOLEAN is_valid_denom(int denom, enum denomination * denom_enum);
 BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string);
-BOOLEAN serialize_coin(const char * file_name, struct coin cash_register[]);
+BOOLEAN serialize_coin(const char *, const struct coin cash_register[]);
 
 BOOLEAN add_to_register_from_string(struct coin *cash_register,
     char attributes[][COIN_LENGTH + 1], BOOLEAN *is_added);

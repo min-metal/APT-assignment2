@@ -320,13 +320,14 @@ BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
 /*
  * writes system cash_register to file
  */
-BOOLEAN serialize_coin(const char * file_name, struct coin cash_register[])
+BOOLEAN serialize_coin(const char* file_name,const struct coin cash_register[])
 {
     int i;
     FILE * fp;
     char coin_buffer[COIN_LENGTH + 1];
 
     fp = fopen(file_name, "w");
+    assert(fp != NULL);
     for(i = 0; i < NUM_DENOMS; ++i)
     {
         sprintf(coin_buffer, "%i", VALID_DENOM[cash_register[i].denom]);

@@ -192,6 +192,7 @@ BOOLEAN display_list(struct ppd_list * list);
 
 /* does integrity check before adding to list */
 BOOLEAN load_stock(struct ppd_list * list, char * string);
+BOOLEAN serialize_stock(const char * file_name, const struct ppd_list * list);
 
 /* return stock * with corresponding id, else NULL */
 struct ppd_stock * get_stock_by_id(struct ppd_list * list, char * stock_id);
