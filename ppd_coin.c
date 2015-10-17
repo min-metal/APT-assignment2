@@ -261,6 +261,12 @@ BOOLEAN load_coin(struct coin cash_register[NUM_DENOMS], char * string)
     memset(is_added, 0, sizeof(is_added));
 
     number_of_lines = explode_input(string, '\n') - 1;
+    if(number_of_lines != NUM_DENOMS)
+    {
+        fprintf(stderr, "Coin file must have exactly %i inputs.\n"
+                , NUM_DENOMS);
+        return FALSE;
+    }
     printf("No. lines to read from coins: %i\n", number_of_lines);
 
     start = string;

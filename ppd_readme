@@ -30,3 +30,6 @@
  Price field must not have empty dollar, have exactly 2 numbers in the cent field,
  and must have exactly 1 '.'. Cent must be divisible by 5.
  On hand field can be empty, system will replace it with 0.
+
+ * Coin file
+ Coin file must have exactly 8 inputs, ending with '\n' with no empty lines.
