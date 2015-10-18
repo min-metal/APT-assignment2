@@ -115,8 +115,8 @@ BOOLEAN add_to_register_from_string(struct coin *cash_register,
         ++ current;
     }
 
-    denom = strtol(attributes[DENOMINATION], &end, 0);
-    qty = strtol(attributes[QTY], &end, 0);
+    denom = strtol(attributes[DENOMINATION], &end, 10);
+    qty = strtol(attributes[QTY], &end, 10);
     if(qty < 0)
     {
         fprintf(stderr, "Quantity of coin is < 0!\n");

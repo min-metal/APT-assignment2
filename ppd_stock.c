@@ -517,8 +517,8 @@ unsigned get_price(const char * str)
     char * end;
     unsigned dollar, cent;
 
-    dollar = (unsigned) strtol(str, &end, 0);
-    cent = (unsigned) strtol(end + 1, &end, 0);
+    dollar = (unsigned) strtol(str, &end, 10);
+    cent = (unsigned) strtol(end + 1, &end, 10);
 
     return dollar * DOLLAR_TO_CENT + cent;
 }
@@ -531,7 +531,7 @@ unsigned get_on_hand(const char * str)
     char * end;
     unsigned onhand;
 
-    onhand = (unsigned) strtol(str, &end, 0);
+    onhand = (unsigned) strtol(str, &end, 10);
 
     return onhand;
 }

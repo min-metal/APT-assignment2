@@ -225,7 +225,7 @@ INPUT_RESULT get_int(int * num, unsigned length, char * prompt)
         return input_result;
     }
 
-    input_num = (int) strtol(temp, &end, 0);
+    input_num = (int) strtol(temp, &end, 10);
 
     if(*end)
     {
