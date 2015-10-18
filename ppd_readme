@@ -31,5 +31,9 @@
  and must have exactly 1 '.'. Cent must be divisible by 5.
  On hand field can be empty, system will replace it with 0.
 
+ When a new stock is created, its ID will be 1 greater than the greatest ID in
+ the system. So if greatest ID is I01999, new stock ID will be I02000. It does
+ not take into account any IDs which may be in between.
+
  * Coin file
  Coin file must have exactly 8 inputs, ending with '\n' with no empty lines.

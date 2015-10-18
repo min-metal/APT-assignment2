@@ -404,7 +404,8 @@ BOOLEAN get_next_stock_id(struct ppd_list * list, char * next_id)
         return FALSE;
     }
 
-    id_num = ((int) strtol(current_id + 1, &end, 0)) + 1;
+    /*id_num = atoi(current_id + 1) + 1;*/
+    id_num = ((int) strtol(current_id + 1, &end, 10)) + 1;
     assert(*end == '\0');
     sprintf(next_id, "%c%04i", ID_CHAR, id_num);
 
